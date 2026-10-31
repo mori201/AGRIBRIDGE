@@ -57,7 +57,7 @@ export async function setOrgPlan(_: unknown, fd: FormData): Promise<ActionResult
 }
 
 // ---------- Opportunités ----------
-export async function reviewOpportunity(_: unknown, fd: FormData): Promise<ActionResult> {
+export async function reviewOpportunity(_: unknown, fd: FormData): Promise<ActionResult<{ redirect: string }>> {
   const s = await admin();
   const parsed = z.object({ id: uuid, decision: z.enum(["published", "rejected", "archived", "pending_review"]), review_note: optStr(1000), verified: z.string().optional(), is_premium: z.string().optional() }).safeParse(Object.fromEntries(fd));
   if (!parsed.success) return fromZod(parsed.error);
@@ -66,7 +66,9 @@ export async function reviewOpportunity(_: unknown, fd: FormData): Promise<Actio
   const patch: Record<string, unknown> = { status: decision, review_note: review_note ?? null, is_premium: is_premium === "on" };
   if (verified === "on") patch.verified_at = new Date().toISOString().slice(0, 10);
   const { error } = await s.from("opportunities").update(patch).eq("id", id);
-  return error ? dbError(error) : done("/admin/opportunites", "Décision enregistrée. L'organisme est notifié.");
+  if (error) return dbError(error);
+  revalidatePath("/admin/opportunites");
+  return { ok: true, data: { redirect: `/admin/opportunites?statut=pending_review&decision=${decision}` } };
 }
 
 const AdminOpp = z.object({

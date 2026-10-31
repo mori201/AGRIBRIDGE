@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "@/components/ui/link";
 import { createClient } from "@/lib/supabase/server";
-import { PageHeader } from "@/components/ui/misc";
+import { Notice, PageHeader } from "@/components/ui/misc";
 import { Badge, DemoBadge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { OPP_STATUS_LABELS, labelsOf, OPP_REGIONS } from "@/lib/constants";
@@ -10,8 +10,8 @@ import { AdminOppForm, ReviewForm } from "./client";
 
 export const metadata: Metadata = { title: "Gestion des opportunités" };
 
-export default async function Page({ searchParams }: { searchParams: Promise<{ statut?: string }> }) {
-  const { statut = "pending_review" } = await searchParams;
+export default async function Page({ searchParams }: { searchParams: Promise<{ statut?: string; decision?: string }> }) {
+  const { statut = "pending_review", decision } = await searchParams;
   const supabase = await createClient();
   let q = supabase.from("opportunities").select("id,title,funder_name,status,deadline,amount_min,amount_max,regions,is_demo,is_premium,verified_at,source_url,review_note,application_mode,created_at, organizations(name,is_verified), opportunity_categories(name)").order("updated_at", { ascending: false }).limit(100);
   if (statut !== "toutes") q = q.eq("status", statut);
@@ -20,6 +20,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ s
   return (
     <div className="space-y-5">
       <PageHeader title="Gestion des opportunités" description="Vérifiez chaque opportunité avant publication : source officielle, critères, dates, montants." />
+      {decision && <Notice tone="success">Décision enregistrée ({OPP_STATUS_LABELS[decision] ?? decision}). L&apos;organisme est notifié.</Notice>}
       <div className="flex flex-wrap gap-1.5">{tabs.map(([v, l]) => <Link key={v} href={`?statut=${v}`} className={`rounded-full px-3 py-1.5 text-sm font-semibold ${statut === v ? "bg-brand-700 text-white" : "border border-base"}`}>{l}</Link>)}</div>
       {(data ?? []).length === 0 && <p className="text-sm text-muted">Aucune opportunité dans cette catégorie.</p>}
       <div className="space-y-3">

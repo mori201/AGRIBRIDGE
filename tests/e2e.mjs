@@ -200,6 +200,7 @@ await step("Admin : valider et publier l'opportunité", async () => {
   await p3.goto(`${BASE}/admin/opportunites?statut=pending_review`);
   const card = p3.locator("div.p-4", { hasText: createdTitle }).first();
   await card.getByRole("button", { name: /Valider la décision/ }).click();
+  await p3.waitForURL(/decision=published/, { timeout: 30000 });
   await expectText(p3, "Décision enregistrée");
 });
 await step("Opportunité publiée visible publiquement", async () => {
