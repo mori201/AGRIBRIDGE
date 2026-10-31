@@ -130,7 +130,7 @@ Les mots de passe ne sont **pas** versionnés (transmis séparément). Changez-l
 - `npm test` : 7 tests unitaires du moteur de correspondance — **7/7 OK**.
 - `npm run build` : compilation et vérification TypeScript stricte — **OK**.
 - Sécurité RLS vérifiée en SQL (rôle `authenticated` simulé) : auto-promotion admin, lecture de colonnes privées, publication sans validation, lecture des réponses de quiz, accès au contenu premium, certificat anticipé — **tous bloqués**.
-- `tests/e2e.mjs` (Playwright, viewport smartphone) : 26 parcours (accueil, recherche, favoris, candidature + document, formation complète → certificat, annonce, messagerie, communauté, anti-arnaque, export RGPD, contrôle d'accès, partenaire, export CSV, validation admin, notifications). Voir le rapport de livraison pour les résultats.
+- `tests/e2e.mjs` (Playwright, viewport smartphone) exécuté contre la production Vercel : **26/26 parcours réussis**, sans erreur JavaScript — accueil, recherche instantanée, fiche démo, protection des routes, connexion, tableau de bord et recommandations, score de compatibilité, favoris, candidature + document privé, soumission à l'organisme, formation complète → quiz → certificat, publication d'annonce, contact vendeur (messagerie), publication/commentaire communauté, filtre anti-arnaque, export RGPD, refus d'accès admin, réception et décision partenaire, export CSV, publication partenaire soumise à validation (invisible avant validation), validation admin puis visibilité publique, notification du candidat.
 
 ## 11. Limites connues du MVP
 
