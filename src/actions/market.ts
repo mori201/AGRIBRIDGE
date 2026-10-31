@@ -33,7 +33,7 @@ async function uploadImages(supabase: Awaited<ReturnType<typeof createClient>>, 
   return urls;
 }
 
-export async function saveProduct(_: unknown, fd: FormData): Promise<ActionResult> {
+export async function saveProduct(_: unknown, fd: FormData): Promise<ActionResult<{ redirect: string }>> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -61,7 +61,7 @@ export async function saveProduct(_: unknown, fd: FormData): Promise<ActionResul
   const { data, error } = await supabase.from("products").insert({ ...parsed.data, images, seller_id: user.id }).select("id").single();
   if (error || !data) return dbError(error);
   revalidatePath("/market");
-  redirect(`/market/${data.id}?publie=1`);
+  return { ok: true, data: { redirect: `/market/${data.id}?publie=1` } };
 }
 
 export async function deleteProduct(id: string): Promise<ActionResult> {

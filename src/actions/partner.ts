@@ -1,6 +1,5 @@
 "use server";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { dbError, fromZod, optStr, optUrl, uuid } from "@/lib/actions-helpers";
@@ -37,7 +36,7 @@ const OppSchema = z
   .refine((d) => d.amount_min === null || d.amount_max === null || d.amount_max >= d.amount_min, { message: "Le montant maximum doit être supérieur au minimum", path: ["amount_max"] })
   .refine((d) => d.application_mode === "platform" || d.application_url, { message: "Indiquez le lien officiel de candidature", path: ["application_url"] });
 
-export async function saveOpportunity(_: unknown, fd: FormData): Promise<ActionResult> {
+export async function saveOpportunity(_: unknown, fd: FormData): Promise<ActionResult<{ redirect: string }>> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -75,8 +74,8 @@ export async function saveOpportunity(_: unknown, fd: FormData): Promise<ActionR
     const { error } = await supabase.from("opportunity_eligibility").insert(eligibility.map((label, i) => ({ opportunity_id: oppId, label, position: i + 1, is_mandatory: !/\(souhait/i.test(label) })));
     if (error) return dbError(error);
   }
-  revalidatePath("/partenaire/opportunites");
-  redirect(`/partenaire/opportunites?ok=${intent === "submit" ? "soumise" : "brouillon"}`);
+  // Pas de revalidatePath ici : la page cible est dynamique et sera rechargée par la navigation client.
+  return { ok: true, data: { redirect: `/partenaire/opportunites?ok=${intent === "submit" ? "soumise" : "brouillon"}` } };
 }
 
 export async function archiveOpportunity(id: string): Promise<ActionResult> {

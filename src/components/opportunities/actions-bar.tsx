@@ -3,7 +3,7 @@ import { useOptimistic, useTransition, useState } from "react";
 import { Bookmark, BookmarkCheck, ClipboardList, ExternalLink, Loader2, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { startApplication, toggleSaveOpportunity } from "@/actions/opportunities";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 
 export function SaveButton({ id, saved, compact = false }: { id: string; saved: boolean; compact?: boolean }) {
   const [pending, start] = useTransition();

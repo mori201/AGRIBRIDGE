@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import { Megaphone, PlusCircle } from "lucide-react";
 import { requirePartner } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";

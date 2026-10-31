@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, BadgeCheck, CalendarClock, Languages, MapPin, Wallet } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
@@ -18,7 +18,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   const { id } = await params;
   if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
   const supabase = await createClient();
-  const { data: e } = await supabase.from("experts").select("*, profiles(avatar_url)").eq("id", id).maybeSingle();
+  const { data: e } = await supabase.from("experts").select("*, profiles!experts_profile_id_fkey(avatar_url)").eq("id", id).maybeSingle();
   if (!e) notFound();
   const user = await getUser();
   return (

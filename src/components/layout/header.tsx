@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import { Bell, LayoutDashboard } from "lucide-react";
 import { Logo } from "./logo";
 import { LinkButton } from "@/components/ui/button";

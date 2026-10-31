@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import { BadgeCheck, Bot, Languages, MapPin, ShieldAlert, Sparkles } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { Avatar, EmptyState, Notice, PageHeader } from "@/components/ui/misc";
@@ -14,7 +14,7 @@ export const metadata: Metadata = { title: "AgriExpert — Assistant IA et exper
 export default async function Page({ searchParams }: { searchParams: Promise<{ specialite?: string; region?: string }> }) {
   const sp = await searchParams;
   const supabase = await createClient();
-  let q = supabase.from("experts").select("id,full_name,title,specialties,bio,region,languages,availability,rate_fcfa,is_verified,is_demo,profiles(avatar_url)").eq("is_active", true).order("is_verified", { ascending: false });
+  let q = supabase.from("experts").select("id,full_name,title,specialties,bio,region,languages,availability,rate_fcfa,is_verified,is_demo,profiles!experts_profile_id_fkey(avatar_url)").eq("is_active", true).order("is_verified", { ascending: false });
   if (sp.specialite) q = q.contains("specialties", [sp.specialite]);
   if (sp.region) q = q.eq("region", sp.region);
   const { data: experts } = await q;

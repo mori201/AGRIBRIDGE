@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import { AlertTriangle, Bot, Loader2, Send } from "lucide-react";
 import { Markdown } from "@/lib/markdown";
 import { LANGUAGES } from "@/lib/constants";

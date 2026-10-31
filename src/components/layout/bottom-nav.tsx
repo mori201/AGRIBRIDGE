@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import { usePathname } from "next/navigation";
 import { GraduationCap, HandCoins, Home, MessagesSquare, Store } from "lucide-react";
 import { cn } from "@/lib/utils";

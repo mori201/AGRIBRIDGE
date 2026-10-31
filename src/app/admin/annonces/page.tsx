@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import { createClient } from "@/lib/supabase/server";
 import { PageHeader } from "@/components/ui/misc";
 import { Badge, DemoBadge } from "@/components/ui/badge";
@@ -12,7 +12,7 @@ export const metadata: Metadata = { title: "Gestion des annonces" };
 export default async function Page({ searchParams }: { searchParams: Promise<{ statut?: string }> }) {
   const { statut } = await searchParams;
   const supabase = await createClient();
-  let q = supabase.from("products").select("id,title,price_fcfa,unit,status,is_demo,created_at, profiles(full_name), product_categories(name)").order("created_at", { ascending: false }).limit(200);
+  let q = supabase.from("products").select("id,title,price_fcfa,unit,status,is_demo,created_at, profiles!products_seller_id_fkey(full_name), product_categories(name)").order("created_at", { ascending: false }).limit(200);
   if (statut) q = q.eq("status", statut);
   const { data } = await q;
   return (

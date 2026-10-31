@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import { useEffect, useRef, useState } from "react";
 import { Avatar } from "@/components/ui/misc";
 import { ROLE_LABELS } from "@/lib/constants";

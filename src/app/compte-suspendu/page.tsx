@@ -1,5 +1,5 @@
 import { ShieldAlert } from "lucide-react";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 
 export const metadata = { title: "Compte suspendu" };
 

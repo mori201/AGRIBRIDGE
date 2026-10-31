@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import { CalendarClock, MapPin, Wallet } from "lucide-react";
 import { Badge, DemoBadge } from "@/components/ui/badge";
 import { amountRange, daysUntil, deadlineStatus, DEADLINE_LABELS, formatDate } from "@/lib/format";

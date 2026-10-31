@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, MapPin, Package, Pencil } from "lucide-react";

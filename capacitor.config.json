@@ -1,0 +1,10 @@
+{
+  "appId": "sn.agribridge.app",
+  "appName": "AgriBridge",
+  "webDir": "public",
+  "server": {
+    "url": "https://agribridge.vercel.app",
+    "cleartext": false
+  },
+  "android": { "backgroundColor": "#18552f" }
+}

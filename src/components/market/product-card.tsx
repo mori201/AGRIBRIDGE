@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import Image from "next/image";
 import { MapPin, Package } from "lucide-react";
 import { DemoBadge, Badge } from "@/components/ui/badge";
@@ -6,7 +6,7 @@ import { fcfa } from "@/lib/format";
 import { labelOf, REGIONS } from "@/lib/constants";
 import type { Product } from "@/lib/types";
 
-export const PRODUCT_SELECT = "id,seller_id,category_id,title,description,price_fcfa,unit,quantity,region,location,images,whatsapp,status,is_demo,created_at,product_categories(name,slug),profiles(id,full_name,avatar_url,region)";
+export const PRODUCT_SELECT = "id,seller_id,category_id,title,description,price_fcfa,unit,quantity,region,location,images,whatsapp,status,is_demo,created_at,product_categories(name,slug),profiles!products_seller_id_fkey(id,full_name,avatar_url,region)";
 
 export function ProductCard({ p }: { p: Product }) {
   return (

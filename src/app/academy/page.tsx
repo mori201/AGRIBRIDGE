@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import { CalendarDays, GraduationCap, Video } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { CourseCard, type CourseLite } from "@/components/academy/course-card";

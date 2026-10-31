@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import { Clock, Crown, GraduationCap } from "lucide-react";
 import { Badge, DemoBadge } from "@/components/ui/badge";
 import { COURSE_CATEGORIES, COURSE_LEVELS, labelOf } from "@/lib/constants";

@@ -48,7 +48,8 @@ export function ActionForm({
   useEffect(() => {
     if (state?.ok) {
       if (resetOnSuccess) ref.current?.reset();
-      if (redirectTo) router.push(redirectTo);
+      const target = (state.data as { redirect?: string } | undefined)?.redirect ?? redirectTo;
+      if (target) router.push(target);
       else if (refresh) router.refresh();
     }
   }, [state, resetOnSuccess, redirectTo, refresh, router]);

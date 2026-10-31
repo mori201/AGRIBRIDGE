@@ -19,12 +19,16 @@ export async function updateSession(request: NextRequest) {
     },
   });
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // Rafraîchit la session si nécessaire (écrit les nouveaux cookies sur la réponse).
+  const { data, error } = await supabase.auth.getUser();
+  const user = data?.user ?? null;
+  const hasSessionCookie = request.cookies.getAll().some((c) => c.name.startsWith("sb-") && c.name.includes("auth-token"));
+  // Une erreur réseau transitoire ne doit pas déconnecter l'utilisateur : on ne redirige que si
+  // aucune session n'existe (pas de cookie) ou si Supabase confirme qu'elle est invalide.
+  const definitelyAnonymous = !hasSessionCookie || (!user && error?.status !== undefined && error.status >= 400 && error.status < 500);
 
   const path = request.nextUrl.pathname;
-  if (!user && PROTECTED.some((p) => path === p || path.startsWith(`${p}/`))) {
+  if (definitelyAnonymous && PROTECTED.some((p) => path === p || path.startsWith(`${p}/`))) {
     const url = request.nextUrl.clone();
     url.pathname = "/connexion";
     url.search = `?next=${encodeURIComponent(path + request.nextUrl.search)}`;

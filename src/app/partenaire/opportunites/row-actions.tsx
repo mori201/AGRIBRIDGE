@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import { useState, useTransition } from "react";
 import { Archive, Eye, Pencil, Trash2 } from "lucide-react";
 import { archiveOpportunity, deleteOpportunity } from "@/actions/partner";

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import { PackageSearch, Plus } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { PRODUCT_SELECT, ProductCard } from "@/components/market/product-card";

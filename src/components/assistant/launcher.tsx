@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import { Maximize2, Sparkles, X } from "lucide-react";
 import { Chat } from "./chat";
 

@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import * as React from "react";
 import { cn } from "@/lib/utils";
 

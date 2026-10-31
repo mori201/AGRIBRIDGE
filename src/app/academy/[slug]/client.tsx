@@ -1,6 +1,6 @@
 "use client";
 import { useState, useTransition } from "react";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import { Award, Heart, Loader2, Play } from "lucide-react";
 import { Button, LinkButton } from "@/components/ui/button";
 import { claimCertificate, enroll, toggleFavoriteCourse } from "@/actions/academy";

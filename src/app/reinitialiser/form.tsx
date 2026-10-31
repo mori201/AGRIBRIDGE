@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import { ActionForm, SubmitButton, fieldError } from "@/components/forms";
 import { Field, Input } from "@/components/ui/field";
 import { updatePassword } from "@/actions/auth";

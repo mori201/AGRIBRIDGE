@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import Image from "next/image";
 import { HelpCircle, MessageCircle, Newspaper, Repeat2 } from "lucide-react";
 import { Avatar } from "@/components/ui/misc";

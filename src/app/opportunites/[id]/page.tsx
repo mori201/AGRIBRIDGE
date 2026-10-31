@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import { notFound } from "next/navigation";
 import { AlertTriangle, ArrowLeft, Building2, CalendarClock, CheckCircle2, CircleDashed, FileText, HelpCircle, Mail, MapPin, Phone, ShieldCheck, Users, Wallet, XCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";

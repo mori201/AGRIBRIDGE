@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import { AuthShell } from "@/components/auth-shell";
 import { ForgotForm } from "./form";
 

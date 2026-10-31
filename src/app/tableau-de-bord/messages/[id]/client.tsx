@@ -29,7 +29,7 @@ export function MessagesLive({ conversationId, me, initial }: { conversationId: 
       {msgs.map((m) => (
         <div key={m.id} className={cn("max-w-[80%] rounded-2xl px-3.5 py-2 text-sm", m.sender_id === me ? "ml-auto bg-brand-700 text-white" : "surface-2")}>
           <p className="whitespace-pre-wrap break-words">{m.content}</p>
-          <p className={cn("mt-0.5 text-[10px]", m.sender_id === me ? "text-brand-100" : "text-muted")}>{new Date(m.created_at).toLocaleString("fr-FR", { hour: "2-digit", minute: "2-digit", day: "numeric", month: "short" })}</p>
+          <p suppressHydrationWarning className={cn("mt-0.5 text-[10px]", m.sender_id === me ? "text-brand-100" : "text-muted")}>{new Date(m.created_at).toLocaleString("fr-FR", { hour: "2-digit", minute: "2-digit", day: "numeric", month: "short" })}</p>
         </div>
       ))}
       <div ref={end} />
