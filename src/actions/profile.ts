@@ -14,9 +14,12 @@ export async function saveProfile(input: ProfileInput & { complete?: boolean }):
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return { ok: false, error: "Session expirée, reconnectez-vous." };
-  const parsed = ProfileSchema.safeParse(input);
+  const { data: current } = await supabase.rpc("my_profile");
+  const isAdmin = current?.role === "admin";
+  const parsed = ProfileSchema.safeParse(isAdmin ? { ...input, role: "agripreneur" } : input);
   if (!parsed.success) return fromZod(parsed.error);
   const patch: Record<string, unknown> = { ...parsed.data };
+  if (isAdmin) delete patch.role; // le rôle administrateur ne se modifie pas depuis le profil
   if (input.complete) patch.onboarding_completed = true;
   const { error } = await supabase.from("profiles").update(patch).eq("id", user.id);
   if (error) return dbError(error);
