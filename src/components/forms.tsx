@@ -31,7 +31,7 @@ export function ActionForm({
   className,
   resetOnSuccess = false,
   redirectTo,
-  refresh = true,
+  refresh = false,
   showSuccess = true,
 }: {
   action: Action;
@@ -49,7 +49,8 @@ export function ActionForm({
     if (state?.ok) {
       if (resetOnSuccess) ref.current?.reset();
       const target = (state.data as { redirect?: string } | undefined)?.redirect ?? redirectTo;
-      if (target) router.push(target);
+      // Navigation complète après une action : plus fiable sur réseau lent qu'une transition client
+      if (target) window.location.assign(target);
       else if (refresh) router.refresh();
     }
   }, [state, resetOnSuccess, redirectTo, refresh, router]);

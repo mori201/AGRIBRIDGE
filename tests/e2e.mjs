@@ -24,7 +24,7 @@ async function login(page, email, pw) {
 }
 
 const browser = await chromium.launch();
-const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, locale: "fr-FR" }); // smartphone
+const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, locale: "fr-FR", serviceWorkers: process.env.SW ?? "allow" }); // smartphone
 const page = await ctx.newPage();
 const errors = [];
 page.on("pageerror", (e) => errors.push(e.message));
@@ -159,7 +159,7 @@ await step("Un agripreneur n'accède pas à l'administration", async () => {
 });
 
 // --- Partenaire ---
-const p2 = await (await browser.newContext({ viewport: { width: 1280, height: 900 } })).newPage();
+const p2 = await (await browser.newContext({ viewport: { width: 1280, height: 900 }, serviceWorkers: process.env.SW ?? "allow" })).newPage();
 await step("Connexion partenaire + candidature reçue", async () => {
   await login(p2, process.env.PARTNER_EMAIL, process.env.PARTNER_PW);
   await p2.goto(`${BASE}/partenaire/candidatures`);
@@ -194,7 +194,7 @@ await step("L'opportunité soumise n'est pas encore publique", async () => {
 });
 
 // --- Admin ---
-const p3 = await (await browser.newContext({ viewport: { width: 1280, height: 900 } })).newPage();
+const p3 = await (await browser.newContext({ viewport: { width: 1280, height: 900 }, serviceWorkers: process.env.SW ?? "allow" })).newPage();
 await step("Admin : valider et publier l'opportunité", async () => {
   await login(p3, process.env.ADMIN_EMAIL, process.env.ADMIN_PW);
   await p3.goto(`${BASE}/admin/opportunites?statut=pending_review`);
