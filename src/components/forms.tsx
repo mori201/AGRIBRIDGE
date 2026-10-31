@@ -9,10 +9,10 @@ import type { ActionResult } from "@/lib/types";
 import type { VariantProps } from "class-variance-authority";
 import type { buttonVariants } from "@/components/ui/button";
 
-export function SubmitButton({ children, pendingText = "Enregistrement…", className, variant, size, disabled }: { children: React.ReactNode; pendingText?: string; className?: string; disabled?: boolean } & VariantProps<typeof buttonVariants>) {
+export function SubmitButton({ children, pendingText = "Enregistrement…", className, variant, size, disabled, name, value }: { children: React.ReactNode; pendingText?: string; className?: string; disabled?: boolean; name?: string; value?: string } & VariantProps<typeof buttonVariants>) {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" disabled={pending || disabled} className={className} variant={variant} size={size} aria-busy={pending}>
+    <Button type="submit" name={name} value={value} disabled={pending || disabled} className={className} variant={variant} size={size} aria-busy={pending}>
       {pending && <Loader2 className="h-4 w-4 animate-spin" aria-hidden />}
       {pending ? pendingText : children}
     </Button>
