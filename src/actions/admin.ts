@@ -67,7 +67,7 @@ export async function reviewOpportunity(_: unknown, fd: FormData): Promise<Actio
   if (verified === "on") patch.verified_at = new Date().toISOString().slice(0, 10);
   const { error } = await s.from("opportunities").update(patch).eq("id", id);
   if (error) return dbError(error);
-  revalidatePath("/admin/opportunites");
+  // Pas de revalidatePath : la carte disparaîtrait avant la redirection ; la navigation complète recharge la liste.
   return { ok: true, data: { redirect: `/admin/opportunites?statut=pending_review&decision=${decision}` } };
 }
 
