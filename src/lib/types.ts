@@ -77,4 +77,4 @@ export interface Product {
   profiles?: { id: string; full_name: string; avatar_url: string | null; region: string | null } | null;
 }
 
-export type ActionResult<T = undefined> = { ok: true; message?: string; data?: T } | { ok: false; error: string; fieldErrors?: Record<string, string[] | undefined> };
+export type ActionResult<T = undefined> = { ok: true; message?: string; data?: T } | { ok: false; error: string; fieldErrors?: Record<string, string[] | undefined>; data?: Record<string, unknown> };

@@ -26,7 +26,7 @@ export async function signIn(_: unknown, fd: FormData): Promise<ActionResult> {
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword(parsed.data);
   if (error) {
-    if (/confirm/i.test(error.message)) return { ok: false, error: "Votre adresse e-mail n'est pas encore confirmée. Consultez votre boîte de réception." };
+    if (/confirm/i.test(error.message)) return { ok: false, error: "Votre adresse e-mail n'est pas encore confirmée. Consultez votre boîte de réception (et les spams), ou renvoyez l'e-mail de confirmation ci-dessous.", data: { unconfirmed: true } } as ActionResult;
     if (error.status === 429) return { ok: false, error: "Trop de tentatives. Patientez quelques minutes." };
     return { ok: false, error: "E-mail ou mot de passe incorrect." };
   }
@@ -56,10 +56,28 @@ export async function signUp(_: unknown, fd: FormData): Promise<ActionResult> {
     if (/registered|exists/i.test(error.message)) return { ok: false, error: "Un compte existe déjà avec cet e-mail." };
     if (/weak|pwned|leaked/i.test(error.message)) return { ok: false, error: "Mot de passe trop faible ou compromis. Choisissez-en un autre." };
     if (error.status === 429) return { ok: false, error: "Trop d'inscriptions récentes. Réessayez dans quelques minutes." };
-    return { ok: false, error: "Inscription impossible pour le moment." };
+    if (/sending|email/i.test(error.message)) {
+      console.error("[auth] envoi de l'e-mail de confirmation impossible :", error.message);
+      return { ok: false, error: "Votre compte n'a pas pu être créé : l'envoi de l'e-mail de confirmation est momentanément indisponible. Réessayez un peu plus tard ou écrivez-nous via la page Contact." };
+    }
+    console.error("[auth] inscription refusée :", error.status, error.message);
+    return { ok: false, error: "Inscription impossible pour le moment. Réessayez dans quelques minutes." };
   }
   if (data.session) redirect("/onboarding");
   return { ok: true, message: `Compte créé ! Un e-mail de confirmation a été envoyé à ${email}. Cliquez sur le lien pour activer votre compte.` };
+}
+
+export async function resendConfirmation(email: string): Promise<ActionResult> {
+  const parsed = z.string().trim().email().safeParse(email);
+  if (!parsed.success) return { ok: false, error: "Saisissez d'abord votre adresse e-mail." };
+  const supabase = await createClient();
+  const { error } = await supabase.auth.resend({ type: "signup", email: parsed.data, options: { emailRedirectTo: `${await origin()}/auth/callback?next=/onboarding` } });
+  if (error) {
+    if (error.status === 429) return { ok: false, error: "Patientez une minute avant de redemander l'e-mail." };
+    console.error("[auth] renvoi de confirmation impossible :", error.message);
+    return { ok: false, error: "Envoi impossible pour le moment. Réessayez plus tard ou contactez-nous." };
+  }
+  return { ok: true, message: "E-mail de confirmation renvoyé. Pensez à vérifier vos spams." };
 }
 
 export async function requestPasswordReset(_: unknown, fd: FormData): Promise<ActionResult> {
